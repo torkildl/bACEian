@@ -1,0 +1,276 @@
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ [K]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git init
+Initialized empty Git repository in /home/torkildl/Downloads/bACEian/.git/
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git remote [K[K[K[K[K[K[Kadd remote origin master
+fatal: pathspec 'remote' did not match any files
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git add remote origin master[C[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kit add remote [K[K[K[K[K[K[K[K[K[K[Kremote add origin https://githun.c[K[Kb.[K[K[Kb.com/torkildl/bACEian.git
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git add .
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git remove -v
+git: 'remove' is not a git command. See 'git --help'.
+
+The most similar command is
+	remote
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git remove -v[1P[1@t
+origin	https://github.com/torkildl/bACEian.git (fetch)
+origin	https://github.com/torkildl/bACEian.git (push)
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git push 
+fatal: The current branch master has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin master
+
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git push origin master
+error: src refspec master does not match any.
+error: failed to push some refs to 'https://github.com/torkildl/bACEian.git'
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git [K[K[K[Kls
+ACE.gv  bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  simtwins.csv  sim_twins.txt
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ eog  histograms.png 
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ rm sim_twins.txt 
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ ls
+ACE.gv  bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  simtwins.csv
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ rm ACE.gv 
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ ls
+bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  simtwins.csv
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ more model.stan 
+data {
+
+	int <lower=0> n_obs;    // number of observations
+	int <lower=0> n_fam;    // number of families
+	int <lower=0> n_famtw;  // number of nested twins in families
+	
+	real y[n_obs];    // responses
+	int mz[n_obs];    // mz dummy
+	int dz[n_obs];    // dz dummy
+	int fam[n_obs];   // family indicator (1:nfam)
+	int famtw[n_obs]; // nested twin indicator (1:nfamtw)
+	
+}
+
+transformed data {
+  
+  real z1[n_obs];
+  real z2[n_obs];
+[7m--More--(30%)[27m  [K
+  // compute weights
+  for(i in 1:n_obs) {
+      z1[i] = sqrt(.5)*dz[i];
+      z2[i] = mz[i] + sqrt(.5)*dz[i];
+  }
+  
+}
+
+parameters {
+	
+	// mean
+	real mu;
+	
+	// "random-effects" sd
+	real<lower=0> a; 
+	real<lower=0> c; 
+	real<lower=0> e; 
+[7m--More--(47%)[27m[K	
+	// "random effects"
+	vector[n_famtw] a_unique;
+	vector[n_fam] a_shared;
+	vector[n_fam] c_shared;
+	
+}
+
+transformed parameters {
+
+	vector[n_obs] yhat;
+
+  // predicted responses
+	for(i in 1:n_obs) {
+		yhat[i] = mu + a_unique[ famtw[i] ]*z1[i] + a_shared[ fam[i] ]*z2[i] + c_shared[ fam[i] ];
+	}
+	
+}
+[7m--More--(68%)[27m[K
+model {
+
+	// prior distributions
+	mu ~ normal(0, 5);
+	a_unique ~ normal(0, a);
+	a_shared ~ normal(0, a);
+	c_shared ~ normal(0, c);
+
+	// likelihood
+	y ~ normal(yhat, e);
+	
+}
+
+generated quantities {
+
+	real A;
+	real C;
+[7m--More--(84%)[27m[K	real E;
+	real V;
+	real Asd;
+	real Csd;
+	real Esd;
+
+	// variances
+	A = a^2; 
+	C = c^2;
+	E = e^2;
+	V = A + C + E;
+	
+	// standardized variance components
+	Asd = A / V; // narrow-sense heritability
+	Csd = C / V;
+	Esd = E / V;
+
+}
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$   [K[Kls
+bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  simtwins.csv
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git pulll[K[Ktar zcvf  [K [K/home/torkildl/blurb.tar [C[C[C[1P [1P g z [C . 
+./
+./simtwins.csv
+./model.stan
+./bACEian.Rproj
+./fit.R
+./.Rproj.user/
+./.Rproj.user/shared/
+./.Rproj.user/shared/notebooks/
+./.Rproj.user/shared/notebooks/patch-chunk-names
+./.Rproj.user/shared/notebooks/paths
+./.Rproj.user/F40D7C60/
+./.Rproj.user/F40D7C60/presentation/
+./.Rproj.user/F40D7C60/rmd-outputs
+./.Rproj.user/F40D7C60/explorer-cache/
+./.Rproj.user/F40D7C60/ctx/
+./.Rproj.user/F40D7C60/console06/
+./.Rproj.user/F40D7C60/console06/3A2CAEE1.env
+./.Rproj.user/F40D7C60/console06/3A2CAEE1
+./.Rproj.user/F40D7C60/console06/INDEX001
+./.Rproj.user/F40D7C60/pcs/
+./.Rproj.user/F40D7C60/pcs/source-pane.pper
+./.Rproj.user/F40D7C60/pcs/workbench-pane.pper
+./.Rproj.user/F40D7C60/pcs/windowlayoutstate.pper
+./.Rproj.user/F40D7C60/saved_source_markers
+./.Rproj.user/F40D7C60/profiles-cache/
+./.Rproj.user/F40D7C60/viewer-cache/
+./.Rproj.user/F40D7C60/sources/
+./.Rproj.user/F40D7C60/sources/s-B599F0EC/
+./.Rproj.user/F40D7C60/sources/s-B599F0EC/E704EB2D-contents
+./.Rproj.user/F40D7C60/sources/s-B599F0EC/lock_file
+./.Rproj.user/F40D7C60/sources/s-B599F0EC/E704EB2D
+./.Rproj.user/F40D7C60/sources/s-B599F0EC/6109438-contents
+./.Rproj.user/F40D7C60/sources/prop/
+./.Rproj.user/F40D7C60/sources/prop/INDEX
+./.Rproj.user/F40D7C60/sources/prop/3E618F79
+./.Rproj.user/F40D7C60/sources/prop/92A42E66
+./.Rproj.user/F40D7C60/sources/prop/CC278671
+./.Rproj.user/F40D7C60/sources/per/
+./.Rproj.user/F40D7C60/sources/per/u/
+./.Rproj.user/F40D7C60/sources/per/t/
+./.git/
+./.git/branches/
+./.git/description
+./.git/config
+./.git/info/
+./.git/info/exclude
+./.git/HEAD
+./.git/hooks/
+./.git/hooks/prepare-commit-msg.sample
+./.git/hooks/applypatch-msg.sample
+./.git/hooks/pre-push.sample
+./.git/hooks/update.sample
+./.git/hooks/fsmonitor-watchman.sample
+./.git/hooks/pre-applypatch.sample
+./.git/hooks/post-update.sample
+./.git/hooks/pre-commit.sample
+./.git/hooks/pre-rebase.sample
+./.git/hooks/pre-receive.sample
+./.git/hooks/commit-msg.sample
+./.git/refs/
+./.git/refs/heads/
+./.git/refs/tags/
+./.git/index
+./.git/objects/
+./.git/objects/9e/
+./.git/objects/9e/fb51b8a1909bd877dd72ae8a1c4625f8307e36
+./.git/objects/3f/
+./.git/objects/3f/2ff2d6cc8f257ffcade7ead1ca4042c0e884b9
+./.git/objects/b9/
+./.git/objects/b9/f6ddd6562795b63a7130b802611c117423cf23
+./.git/objects/8e/
+./.git/objects/8e/3c2ebc99e2e337f7d69948b93529a437590b27
+./.git/objects/pack/
+./.git/objects/e6/
+./.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391
+./.git/objects/ad/
+./.git/objects/ad/7f938aedcd6bce947f485b27a440a31a46eeea
+./.git/objects/2b/
+./.git/objects/2b/1bef112ac6921abda6162a65dbfcd8c6d55c80
+./.git/objects/1c/
+./.git/objects/1c/b6f32bf4511a38f7ff0fd1fe85a1ce050a1156
+./.git/objects/1c/c43b4f6c6818af29475fab937e9d2bb51f04c9
+./.git/objects/info/
+./.git/objects/5c/
+./.git/objects/5c/e16b4d5fb6d78424a81afd9630235ab4b223a1
+./.git/objects/c9/
+./.git/objects/c9/25790e77b2bfc7aa10753e021f135374fb0e03
+./.git/objects/ac/
+./.git/objects/ac/71729814f7d08a4380fcd590b7921d791dcb84
+./.git/objects/2f/
+./.git/objects/2f/a3adae65d05025ecd1ff08f2cc8b8decdc7560
+./.git/objects/1d/
+./.git/objects/1d/d808bb69ad9a17c7295ffac2daee4709b86042
+./.git/objects/6d/
+./.git/objects/6d/c0fcef4b8f7fa17c95bd2ffb6fb9377e0b246c
+./.git/objects/10/
+./.git/objects/10/82e0864119f27b9f6db1fde450bfbdc9ed0dd3
+./.git/objects/c3/
+./.git/objects/c3/db8426378e072a9072edad0d442c71a47b3332
+./.git/objects/cd/
+./.git/objects/cd/1c87e7dd94a8437367a6f1aa1d24abf2e6339d
+./.git/objects/7c/
+./.git/objects/7c/24819ec82d3273cbf67ff193b83ae93dc6a2aa
+./.git/objects/56/
+./.git/objects/56/916969645563f3f00955f4031f298d14028895
+./.git/objects/8c/
+./.git/objects/8c/956c6afa77d628b85a92c7aa5f5e409ed7603d
+./histograms.png
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git pull
+remote: Enumerating objects: 3, done.[K
+remote: Counting objects:  33% (1/3)   [Kremote: Counting objects:  66% (2/3)   [Kremote: Counting objects: 100% (3/3)   [Kremote: Counting objects: 100% (3/3), done.[K
+remote: Compressing objects:  50% (1/2)   [Kremote: Compressing objects: 100% (2/2)   [Kremote: Compressing objects: 100% (2/2), done.[K
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0[K
+Unpacking objects:  33% (1/3)   Unpacking objects:  66% (2/3)   Unpacking objects: 100% (3/3)   Unpacking objects: 100% (3/3), done.
+From https://github.com/torkildl/bACEian
+ * [new branch]      master     -> origin/master
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details.
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream-to=origin/<branch> master
+
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git pull[K[K[K[Kremote 
+origin
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git remote [K[K[K[K[K[K[Kpull[K[K[K[Kpush[K[K[K[Kpull [Kls
+bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  simtwins.csv
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git pull
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details.
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream-to=origin/<branch> master
+
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git pull http:&&[K[K//github.com/torkilld/[K[K[K[Kldl/bACEian.git
+warning: redirecting to https://github.com/torkildl/bACEian.git/
+From http://github.com/torkildl/bACEian
+ * branch            HEAD       -> FETCH_HEAD
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ find[K[K[K[Kls
+bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  README.md  simtwins.csv
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ ls
+bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  README.md  simtwins.csv
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git add .
