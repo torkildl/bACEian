@@ -17,7 +17,8 @@ library(tidyverse)
 library(data.table)
 
 ### Read in simulated data on 2000 twinpairs
-simtwins <- fread(input = "simtwins.csv")  
+simtwins <- fread(input = here("simtwins.csv")) %>% sample_n(size=300)
+
 
 # Split by zygosity
 mzs <- filter(simtwins, mz==1)
@@ -44,8 +45,6 @@ d <- simtwins %>%
   select(-twinvar) %>% 
   ungroup %>% 
   mutate(famtw = row_number())
-
-
 
 dat = list(n_obs = nrow(d), n_fam = max(d$fam), n_famtw = max(d$famtw),
            fam = d$fam, famtw = d$famtw,
@@ -81,14 +80,20 @@ hist <- ggplot(df) +
   coord_cartesian(ylim = c(0,400)) + 
   theme_bw() + 
   theme(legend.position = "bottom") 
+hist
 
 ggsave(filename = "histograms.png", plot = hist, device = "png")
 
 
 # Checking out the relationship between A and C components
-list("Stan-HMC" =hmcresults, "Stan-VB"=vbresults) %>% bind_rows(.id="method") %>% 
+AandC <- list("Stan-HMC" =hmcresults, "Stan-VB"=vbresults) %>% bind_rows(.id="method") %>% 
   select(method, Asd, Csd) %>% 
   ggplot(aes(x=Asd, y=Csd, color=method)) + geom_point(size=.5) + geom_smooth(metho="loess",size=0.7) +
   scale_color_brewer(type="qual")
+ggsave(filename = "./acscatter.png",plot = AandC, device = "png")
 
+
+hist
+
+AandC
 

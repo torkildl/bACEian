@@ -274,3 +274,84 @@ bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  README.md  sim
 ]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ ls
 bACEian.Rproj  fit.R  [0m[01;35mhistograms.png[0m  model.stan  README.md  simtwins.csv
 ]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git add .
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	[32mnew file:   .Rproj.user/F40D7C60/console06/3A2CAEE1[m
+	[32mnew file:   .Rproj.user/F40D7C60/console06/3A2CAEE1.env[m
+	[32mnew file:   .Rproj.user/F40D7C60/console06/INDEX001[m
+	[32mnew file:   .Rproj.user/F40D7C60/pcs/source-pane.pper[m
+	[32mnew file:   .Rproj.user/F40D7C60/pcs/windowlayoutstate.pper[m
+	[32mnew file:   .Rproj.user/F40D7C60/pcs/workbench-pane.pper[m
+	[32mnew file:   .Rproj.user/F40D7C60/rmd-outputs[m
+	[32mnew file:   .Rproj.user/F40D7C60/saved_source_markers[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/prop/1D3991C1[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/prop/3E618F79[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/prop/92A42E66[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/prop/CC278671[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/prop/INDEX[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/s-B599F0EC/1F054B76-contents[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/s-B599F0EC/2F9D3913-contents[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/s-B599F0EC/6109438-contents[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/s-B599F0EC/E704EB2D[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/s-B599F0EC/E704EB2D-contents[m
+	[32mnew file:   .Rproj.user/F40D7C60/sources/s-B599F0EC/lock_file[m
+	[32mnew file:   .Rproj.user/shared/notebooks/patch-chunk-names[m
+	[32mnew file:   .Rproj.user/shared/notebooks/paths[m
+	[32mmodified:   README.md[m
+	[32mnew file:   bACEian.Rproj[m
+	[32mnew file:   fit.R[m
+	[32mnew file:   histograms.png[m
+	[32mnew file:   model.stan[m
+	[32mnew file:   simtwins.csv[m
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	[31mmodified:   .Rproj.user/F40D7C60/console06/3A2CAEE1[m
+
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git commit -m "Initial commit"
+[master 5540869] Initial commit
+ 27 files changed, 2801 insertions(+), 2 deletions(-)
+ create mode 100644 .Rproj.user/F40D7C60/console06/3A2CAEE1
+ create mode 100644 .Rproj.user/F40D7C60/console06/3A2CAEE1.env
+ create mode 100644 .Rproj.user/F40D7C60/console06/INDEX001
+ create mode 100644 .Rproj.user/F40D7C60/pcs/source-pane.pper
+ create mode 100644 .Rproj.user/F40D7C60/pcs/windowlayoutstate.pper
+ create mode 100644 .Rproj.user/F40D7C60/pcs/workbench-pane.pper
+ create mode 100644 .Rproj.user/F40D7C60/rmd-outputs
+ create mode 100644 .Rproj.user/F40D7C60/saved_source_markers
+ create mode 100644 .Rproj.user/F40D7C60/sources/prop/1D3991C1
+ create mode 100644 .Rproj.user/F40D7C60/sources/prop/3E618F79
+ create mode 100644 .Rproj.user/F40D7C60/sources/prop/92A42E66
+ create mode 100644 .Rproj.user/F40D7C60/sources/prop/CC278671
+ create mode 100644 .Rproj.user/F40D7C60/sources/prop/INDEX
+ create mode 100644 .Rproj.user/F40D7C60/sources/s-B599F0EC/1F054B76-contents
+ create mode 100644 .Rproj.user/F40D7C60/sources/s-B599F0EC/2F9D3913-contents
+ create mode 100644 .Rproj.user/F40D7C60/sources/s-B599F0EC/6109438-contents
+ create mode 100644 .Rproj.user/F40D7C60/sources/s-B599F0EC/E704EB2D
+ create mode 100644 .Rproj.user/F40D7C60/sources/s-B599F0EC/E704EB2D-contents
+ create mode 100644 .Rproj.user/F40D7C60/sources/s-B599F0EC/lock_file
+ create mode 100644 .Rproj.user/shared/notebooks/patch-chunk-names
+ create mode 100644 .Rproj.user/shared/notebooks/paths
+ rewrite README.md (85%)
+ create mode 100644 bACEian.Rproj
+ create mode 100644 fit.R
+ create mode 100644 histograms.png
+ create mode 100644 model.stan
+ create mode 100644 simtwins.csv
+]0;/home/torkildl/Downloads/bACEian]0;torkildl@xps: ~/Downloads/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Downloads/bACEian[00m$ git push orih[Kgin master
+Username for 'https://github.com': torkildl@ 
+Password for 'https://torkildl@github.com': 
+Counting objects: 35, done.
+Delta compression using up to 8 threads.
+Compressing objects:   3% (1/29)   Compressing objects:   6% (2/29)   Compressing objects:  10% (3/29)   Compressing objects:  13% (4/29)   Compressing objects:  17% (5/29)   Compressing objects:  20% (6/29)   Compressing objects:  24% (7/29)   Compressing objects:  27% (8/29)   Compressing objects:  31% (9/29)   Compressing objects:  34% (10/29)   Compressing objects:  37% (11/29)   Compressing objects:  41% (12/29)   Compressing objects:  44% (13/29)   Compressing objects:  48% (14/29)   Compressing objects:  51% (15/29)   Compressing objects:  55% (16/29)   Compressing objects:  58% (17/29)   Compressing objects:  62% (18/29)   Compressing objects:  65% (19/29)   Compressing objects:  68% (20/29)   Compressing objects:  72% (21/29)   Compressing objects:  75% (22/29)   Compressing objects:  79% (23/29)   Compressing objects:  82% (24/29)   Compressing objects:  86% (25/29)   Compressing objects:  89% (26/29)   Compressing objects:  93% (27/29)   Compressing objects:  96% (28/29)   Compressing objects: 100% (29/29)   Compressing objects: 100% (29/29), done.
+Writing objects:   2% (1/35)   Writing objects:   5% (2/35)   Writing objects:   8% (3/35)   Writing objects:  11% (4/35)   Writing objects:  14% (5/35)   Writing objects:  17% (6/35)   Writing objects:  20% (7/35)   Writing objects:  22% (8/35)   Writing objects:  25% (9/35)   Writing objects:  28% (10/35)   Writing objects:  31% (11/35)   Writing objects:  34% (12/35)   Writing objects:  37% (13/35)   Writing objects:  40% (14/35)   Writing objects:  42% (15/35)   Writing objects:  45% (16/35)   Writing objects:  48% (17/35)   Writing objects:  51% (18/35)   Writing objects:  54% (19/35)   Writing objects:  57% (20/35)   Writing objects:  60% (21/35)   Writing objects:  62% (22/35)   Writing objects:  65% (23/35)   Writing objects:  68% (24/35)   Writing objects:  71% (25/35)   Writing objects:  74% (26/35)   Writing objects:  77% (27/35)   Writing objects:  80% (28/35)   Writing objects:  82% (29/35)   Writing objects:  85% (30/35)   Writing objects:  88% (31/35)   Writing objects:  91% (32/35)   Writing objects:  94% (33/35)   Writing objects:  97% (34/35)   Writing objects: 100% (35/35)   Writing objects: 100% (35/35), 55.88 KiB | 6.98 MiB/s, done.
+Total 35 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas:   0% (0/1)   [Kremote: Resolving deltas: 100% (1/1)   [Kremote: Resolving deltas: 100% (1/1), done.[K
+To https://github.com/torkildl/bACEian.git
+   82cb346..5540869  master -> master
+ls -l[K[K[K[K[Kgit ad [Kd .
