@@ -17,7 +17,7 @@ library(tidyverse)
 library(data.table)
 
 ### Read in simulated data on 2000 twinpairs
-simtwins <- fread(input = here("simtwins.csv")) %>% sample_n(size=300)
+simtwins <- fread(input = here("simtwins.csv")) %>% sample_n(size=500)
 
 
 # Split by zygosity
