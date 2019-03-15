@@ -7,6 +7,7 @@
 # It fits the model using Hamiltonian MC.
 #
 options(mc.cores = parallel::detectCores())
+
 #
 library(rstan)
 rstan_options(auto_write = TRUE)
@@ -14,11 +15,34 @@ library(here)
 library(tidyverse)
 library(data.table)
 library(tidybayes)
-library(bayesplot)
 library(mets)
+library(lemon)
+
+#legendmovefunction
+shift_legend2 <- function(p) {
+  # ...
+  # to grob
+  gp <- ggplotGrob(p)
+  facet.panels <- grep("^panel", gp[["layout"]][["name"]])
+  empty.facet.panels <- sapply(facet.panels, function(i) "zeroGrob" %in% class(gp[["grobs"]][[i]]))
+  empty.facet.panels <- facet.panels[empty.facet.panels]
+  
+  # establish name of empty panels
+  empty.facet.panels <- gp[["layout"]][empty.facet.panels, ]
+  names <- empty.facet.panels$name
+  # example of names:
+  #[1] "panel-3-2" "panel-3-3"
+  
+  # now we just need a simple call to reposition the legend
+  reposition_legend(p, 'center', panel=names)
+}
+#shift_legend2(p)
+
+
 
 ### Read in simulated data on 2000 twinpairs
 simtwins <- fread(input = here("simtwins.csv"))
+head(simtwins)
 
 # Get the variance components the "manual way"
 mzs <- filter(simtwins, mz==1)
@@ -47,8 +71,8 @@ data_stan = list(n_fam = max(simtwins$fam),
                             simtwins[mz == 1,]$fam),
                  fam_dz = c(simtwins[mz == 0,]$fam,
                             simtwins[mz == 0,]$fam),
-                 outcome_mean = mean(c(simtwins$tw1, simtwins$tw2)),
-                 outcome_sd = sd(c(simtwins$tw1, simtwins$tw2)))
+                 outcome_sd = sd(c(simtwins$tw1, simtwins$tw2)),
+                 outcome_mean = mean(c(simtwins$tw1, simtwins$tw2)))
 
 dirichlet_fit <- stan(file = here::here("./mixed-ace-dirichlet.stan"), 
            data = data_stan, iter=1000, control = list(adapt_delta = 0.9), pars = c("mu", "a", "c", "e_sigma", "A", "C", "E", "Asd", "Csd", "Esd"))
@@ -59,10 +83,12 @@ posterior <- tidy_draws(dirichlet_fit)
 
 
 ## Histogram of ACE
-posterior %>% 
+histoace <- posterior %>% 
   select(Asd, Csd, Esd, .chain) %>% 
   gather(key=parm, value=est, -.chain) %>% 
   ggplot() + geom_density(aes(fill=as.factor(.chain), x=est), alpha=.3) + facet_wrap(~parm, ncol=2)
+shift_legend2(histoace)
+
 
 
 ## Ask some Qs:
@@ -126,11 +152,3 @@ p_A_larger_E <- nrow(filter(posterior2,Asd>Esd)) / nrow(posterior)
 
 ## Scatter of Asd and Csd
 ggplot(posterior2) + geom_point(aes(x=Asd, y=Csd), alpha=0.3, color="seagreen") +theme_minimal()
-
-
-# posterior2 %>% 
-#   select(Asd, Csd, Esd, .draw) %>% 
-#   gather(key=parm, value=est, -.draw) %>% 
-#   ggplot + geom_bar(aes(x=as.factor(.draw), y=est, color=parm), stat="identity",position=position_dodge2())
-
-

@@ -1,0 +1,475 @@
+---
+title: "An amateur's adventures in BayesiStan"
+subtitle: "Or: trancending binary oppositions like a pro"
+author: "Torkild H. L."
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: [metropolis]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+
+---
+```{r setup, eval=T, include=F}
+options(mc.cores = parallel::detectCores())
+#
+shift_legend2 <- function(p) {
+  # ...
+  # to grob
+  gp <- ggplotGrob(p)
+  facet.panels <- grep("^panel", gp[["layout"]][["name"]])
+  empty.facet.panels <- sapply(facet.panels, function(i) "zeroGrob" %in% class(gp[["grobs"]][[i]]))
+  empty.facet.panels <- facet.panels[empty.facet.panels]
+  
+  # establish name of empty panels
+  empty.facet.panels <- gp[["layout"]][empty.facet.panels, ]
+  names <- empty.facet.panels$name
+  # example of names:
+  #[1] "panel-3-2" "panel-3-3"
+  
+  # now we just need a simple call to reposition the legend
+  reposition_legend(p, 'center', panel=names)
+}
+
+library(rstan)
+rstan_options(auto_write = TRUE)
+library(here)
+library(tidyverse)
+library(data.table)
+library(tidybayes)
+library(mets)
+library(lemon)
+library(bayesplot)
+
+my_iter=10000
+interesting <- c("mu", "a", "c", "e_sigma", "A", "C", "E", "Asd", "Csd", "Esd")
+
+```
+
+# Contents
+
+1. What is Stan, and why would you use it?
+
+2. My motivation and use case
+
+3. The Classic Twin design
+
+4. An Stan version of the CTD
+  
+  4.1 Some Stan code
+
+  4.2 Some results
+
+  4.3 Some diagnostics
+
+5. Some diagnostics and example result
+
+6. My questions
+
+---
+
+# What is Stan, and why would you use it?
+
+
+Amateur answer: A program that let you estimate models "the bayesian way", 
+ 
+- which means the results are represented as the posterior distribution of parameters,
+ 
+- which means your results are a data set about the parameters.
+
+
+
+
+
+Pro answer: A fairly new, updated MCMC sampler that uses Hamiltonian Monte Carlo. 
+
+  - The future of bayesian inference?
+
+
+
+---
+
+# My research problem
+
+
+Has family background lost (some of) its importance for education over birth cohorts?
+
+Are innate abilities/personality/etc more important now than they were, say, 50 yrs ago?
+
+Context: Nordic countries open, education free of charge/accessible
+
+Status quo in sociology: Same old effects of social background.
+
+But, often not with control for genetics!
+
+
+I want to answer look at these issues across cohorts born in the 20th Century
+
+
+Data from the Norwegian twin panel (b.1915-1991).
+
+---
+
+# Why am I interested in Stan?
+
+Bayesian inference is appealing
+
+
+Trancend binary opposition of significant vs. non-significant
+
+
+Real credibility intervals for uncertainty!
+
+
+Can ask posterior distribution questions: How likely is it that genes >> family in importance?
+
+
+Allows specifying a model with "meta-parameters" (tranformed parameters)
+
+
+Prior distributions on parameters
+
+
+Easy to regularize: Avoid negative variances and impossible predictions.
+
+---
+
+# My use case: Twin models of education
+
+- I want to estimate "twin models" using data on Mz and Dz twins.
+
+
+```{r, echo=F}
+knitr::include_graphics("./ctd80.png", dpi=200)
+```
+
+
+- I am interested in A, C and E: The _variance components_ that sums to 100%
+
+- Typically specified as structural equation models with latent variables (in e.g. OpenMX)
+
+- But can also be specified as a mixed model.
+
+
+---
+
+# The Classic Twin Design is also a mixed model
+
+- Mixed model == multilevel model == HLM == random effects model
+
+- Simple data structure:
+    
+  - Really only three variables: Y for twin1, Y for twin2 and their zygosity
+  - But twins nested in *j* families, of Dz or Mz types 
+  - Our Y is educational attainment in years
+
+- A mixed model formulation of CTD:
+
+```{r, echo=F}
+knitr::include_graphics("./rogeberg-model.png", dpi=150)
+```
+
+
+---
+
+# The data
+
+```{r thedata}
+### Read in simulated data on 2000 twinpairs
+simtwins <- fread(input = here("simtwins.csv"))
+head(simtwins)
+```
+
+---
+
+# Data prep for Stan
+
+```{r dataprep}
+data_stan = list(n_fam = max(simtwins$fam),
+                 n_famtw_mz = sum(simtwins$mz == 1),
+                 n_famtw_dz = sum(simtwins$mz == 0),
+                 y_mz = c(simtwins[mz == 1,]$tw1,
+                          simtwins[mz == 1,]$tw2),
+                 y_dz = c(simtwins[mz == 0,]$tw1,
+                          simtwins[mz == 0,]$tw2),
+                 fam_mz = c(simtwins[mz == 1,]$fam,
+                            simtwins[mz == 1,]$fam),
+                 fam_dz = c(simtwins[mz == 0,]$fam,
+                            simtwins[mz == 0,]$fam),
+                 outcome_sd = sd(c(simtwins$tw1, simtwins$tw2)),
+                 outcome_mean = mean(c(simtwins$tw1, simtwins$tw2)))
+```
+ 
+Stan expects data as a list. Contents of the list is defined in the Stan model definition.
+
+---
+
+# The Stan call in R
+
+```{r stancall1, eval=F, echo=T}
+dirichlet_fit <- stan(file = here::here("./mixed-ace-dirichlet.stan"), 
+           data = data_stan, iter=10000, pars = interesting)
+save(dirichlet_fit, file="draws20000.RData")
+```
+
+- `iter`: 10000 iterations from the posterior (but half reserved for "warmup" phase)
+
+- model saves values from the `pars` list of parameters. It's `r interesting`
+
+- The model is specified in the `stan` file: `mixed-ace-dirichlet.stan`
+
+
+---
+
+# The Stan model, data part
+
+```{c, eval=F}
+data {
+  int <lower=0> n_fam; // number of families
+  int <lower=0> n_famtw_mz; // number of mz nested twins in families
+  int <lower=0> n_famtw_dz; // number of dz nested twins in families
+  real y_mz[n_famtw_mz * 2]; // responses
+  real y_dz[n_famtw_dz * 2]; // responses
+  int fam_mz[n_famtw_mz * 2]; // family indicator (1:nfam)
+  int fam_dz[n_famtw_dz * 2]; // family indicator (1:nfam)
+  real<lower = 0> outcome_sd;
+  real outcome_mean;
+}
+transformed data {
+  vector[3] dirichlet_prior;
+  dirichlet_prior = rep_vector(1, 3);
+}
+```
+
+---
+
+# Parameters to be estimated
+
+```{c, eval=F}
+parameters {
+  // mean
+  real mu;
+  // overall variance
+  real<lower = 0> sigma;
+  // variance components
+  simplex[3] var_comp_shares;
+  // "random-effects" sd for genetics
+  vector[n_fam] a_shared_std;
+  // random effects sd for common env
+  vector[n_fam] c_shared_std;
+}
+```
+
+---
+
+# ...and transformed parameters
+
+```{c, eval=F}
+transformed parameters {
+  // "random effects"
+  vector[n_fam] a_shared;
+  vector[n_fam] c_shared;
+  real A;
+  real C;
+  real E;
+  real Asd;
+  real Csd;
+  real Esd;
+  real a;
+  real c;
+  real e_sigma;
+```
+
+---
+# and more trans. parameters
+
+```{c, eval=F}
+  Asd = var_comp_shares[1];
+  Csd = var_comp_shares[2];
+  Esd = var_comp_shares[3];
+  A = Asd * sigma^2;
+  C = Csd * sigma^2;
+  E = Esd * sigma^2;
+  a = sqrt(A);
+  c = sqrt(C);
+  e_sigma = sqrt(E);
+  a_shared = a * a_shared_std;
+  c_shared = c * c_shared_std;
+}
+```
+
+
+---
+
+# The actual model
+
+```{c, eval=F}
+model {
+  vector[n_famtw_mz * 2] y_mz_expected;    // declare space for expected values of y
+  vector[n_famtw_dz * 2] y_dz_expected;
+  mu ~ normal(outcome_mean, outcome_mean * 0.2);    // prior for mu
+  sigma ~ normal(outcome_sd, outcome_sd * 0.3);     // prior for total phenotypic variation
+  var_comp_shares ~ dirichlet(dirichlet_prior);     // the variance components sums to 1
+  a_shared_std ~ normal(0,1);
+  c_shared_std ~ normal(0,1);
+  // model
+  for (i in 1:(n_famtw_mz * 2)){
+    y_mz_expected[i] = mu + a_shared[fam_mz[i]] + c_shared[fam_mz[i]];
+  }
+  for (i in 1:(n_famtw_dz * 2)){
+    y_dz_expected[i] = mu + sqrt(0.5) * a_shared[fam_dz[i]] + c_shared[fam_dz[i]];
+  }
+  target += normal_lpdf(y_mz | y_mz_expected, e_sigma);
+  target += normal_lpdf(y_dz | y_dz_expected, sqrt(E + 0.5 * A));
+}
+```
+
+
+---
+
+# Output
+```{r, eval=T,include=F}
+load("draws20000.RData")
+```
+
+```{r}
+print(dirichlet_fit)
+```
+
+---
+
+# Posteriors for VCs
+
+```{r post}
+posterior <- tidy_draws(dirichlet_fit)
+head(select(posterior, interesting))
+
+histoace <- posterior %>% 
+  select(Asd, Csd, Esd, .chain) %>% 
+  gather(key=parm, value=est, -.chain) %>% 
+  ggplot() + geom_density(aes(fill=as.factor(.chain), x=est), alpha=.3) + facet_wrap(~parm, ncol=2)
+```
+
+---
+
+# Posteriors for VCs
+
+```{r}
+shift_legend2(histoace)
+```
+
+---
+
+# Scatter of posterior of Asd and Csd
+
+```{r}
+ggplot(posterior) + geom_point(aes(x=Asd, y=Csd), alpha=0.2, fill= "seagreen", color="seagreen") +theme_minimal()
+```
+
+---
+
+# Ask the posterior questions!
+
+```{r}
+# How likely that genetics more important than families?
+AoverC <- nrow(posterior %>% filter(Asd>Csd))/nrow(posterior)
+scales::percent(AoverC)
+
+# How likely that families more important than other environmental factors?
+CoverE <- nrow(posterior %>% filter(Csd>Esd))/nrow(posterior)
+scales::percent(CoverE)
+
+# How likely that genetics explain more than half of variance?
+Ahalf <-  nrow(posterior %>% filter(Asd>0.5))/nrow(posterior)
+scales::percent(Ahalf)
+```
+
+---
+
+# How to assess convergence?
+
+We want to:
+
+- Base conclusions on posterior distributions
+
+- Report accurate estimates and uncertainties
+
+- Avoid writing erratums
+
+
+
+If a MCMC chain converges, we're good.
+
+
+How do we know it converged?
+
+---
+
+# Practical diagnostics
+
+- RStan has built-in functions, e.g. `check_hmc_diagnostics()`
+
+
+- Compare results by chains
+
+
+- Look at traceplots (plots of MCMC chains)
+
+
+- Calc. stats, e.g. R-hat
+
+
+- Examine autocorrelation
+
+---
+
+# Traceplots
+
+```{r, echo=F}
+posterior %>% 
+  select(.chain, .iteration, Asd,Csd,Esd) %>% 
+  gather(key=parm, value=est, -.chain, -.iteration) %>% 
+  ggplot(aes(x=.iteration, color=as.factor(.chain), y=est)) + geom_path() + facet_wrap(~parm, ncol=1, scales="free") + scale_color_brewer(type="qual", palette = 2) + theme(legend.position = "none")
+```
+
+---
+
+# Autocorrelation functions
+
+```{r acf, echo=F}
+maxlag <- 1000
+posterior %>% select(interesting) %>% map(function(x) return(acf(x,lag.max = maxlag, plot=F)$acf)) %>% bind_cols %>% filter(row_number()>1) %>% mutate(lag = 1:maxlag) %>% gather(key=parm, value=acf, -lag) %>% ggplot(aes(x=lag,y=acf)) + geom_line() + facet_wrap(~parm) + ylim(-0.2,0.3)
+```
+
+---
+
+# Next steps
+
+- Do more diagnostics
+
+- Experiment more with priors
+
+- Examine changes across 1915-1990 birth cohorts
+
+- Extend model to
+
+  -  accept previous cohort's results as prior distribution?
+  -  incorporate changes over time in parameters??
+
+
+---
+
+# Sneak peek @ 1915-1985 cohorts
+
+Top to bottom: 1915,1950 and 1985 cohorts
+Left to right: A (genetics), C (family) and E (random) components
+Purple = women, green = men
+```{r, echo=F}
+knitr::include_graphics("./sneak-peek.png", dpi=250)
+```
+
+- GitHub repo for Stan code: http://github.com/torkildl/bACEian
+

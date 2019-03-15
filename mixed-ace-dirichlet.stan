@@ -13,26 +13,25 @@ data {
   real<lower = 0> outcome_sd;
   real outcome_mean;
 }
+
 transformed data {
   vector[3] dirichlet_prior;
-  // dirichlet_prior[1] = 6;
-  // dirichlet_prior[2] = 1;
-  // dirichlet_prior[3] = 3;
   dirichlet_prior = rep_vector(1, 3);
 }
+
 parameters {
   // mean
   real mu;
+  // overall variance
   real<lower = 0> sigma;
+  // variance components
   simplex[3] var_comp_shares;
-  // "random-effects" sd
-  // real<lower=0> a;
-  // real<lower=0> c;
-  // real<lower=0> e_sigma;
-  // "random effects"
+  // "random-effects" sd for genetics
   vector[n_fam] a_shared_std;
+  // random effects sd for common env
   vector[n_fam] c_shared_std;
 }
+
 transformed parameters {
   // "random effects"
   vector[n_fam] a_shared;
@@ -59,6 +58,7 @@ transformed parameters {
   a_shared = a * a_shared_std;
   c_shared = c * c_shared_std;
 }
+
 model {
   vector[n_famtw_mz * 2] y_mz_expected;
   vector[n_famtw_dz * 2] y_dz_expected;
@@ -80,6 +80,7 @@ model {
   target += normal_lpdf(y_mz | y_mz_expected, e_sigma);
   target += normal_lpdf(y_dz | y_dz_expected, sqrt(E + 0.5 * A));
 }
+
 generated quantities {
   vector[n_famtw_mz * 2] y_rep_mz;
   vector[n_famtw_dz * 2] y_rep_dz;
