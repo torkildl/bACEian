@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 *.rds
-*_files/*
+presentation-berkeley_files/*
 ignore/*

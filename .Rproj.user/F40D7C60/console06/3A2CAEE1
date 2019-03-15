@@ -473,3 +473,95 @@ drwxrwxr-x 3 torkildl torkildl     4096 mars  12 13:26 [01;34mpresentation-berk
 ]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ ls libs
 [0m[01;34mremark-css[0m  [01;34mremark-css-0.0.1[0m
 ]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ rm afit.RData [K[K[K[K[K[K[K[K[K[K[K[K[K[Krm mixed-ace-[K[K[K[K[K[K[K[K[K[K[K[K[Kgit add .
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	[32mmodified:   .Rproj.user/F40D7C60/console06/3A2CAEE1[m
+	[32mmodified:   .Rproj.user/F40D7C60/console06/3A2CAEE1.env[m
+	[32mmodified:   .Rproj.user/F40D7C60/console06/INDEX001[m
+	[32mmodified:   .gitignore[m
+	[32mdeleted:    diagnosticsMCMC.pdf[m
+	[32mdeleted:    mcmc_slides2-diagnostics.pdf[m
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	[31mmodified:   .Rproj.user/F40D7C60/console06/3A2CAEE1[m
+
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git comi[Kmit -m "BErkeley[K[K[K[K[K[K[Kerkeley workshop materials II"
+[master 58925d5] Berkeley workshop materials II
+ 6 files changed, 71 insertions(+), 6 deletions(-)
+ rewrite .Rproj.user/F40D7C60/console06/INDEX001 (75%)
+ delete mode 100644 diagnosticsMCMC.pdf
+ delete mode 100644 mcmc_slides2-diagnostics.pdf
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git commit -m "Berkeley workshop materials II"status[K[1Padd .[2Pls libs[2P-lmv mcmc_slides2-diagnostics.pdf diagnosticsMCMC.pdf ignore/vi .gitignore [K[2Pmkdir ignorevi .gitignore git push origin master
+Username for 'https://github.com': torkildl
+Password for 'https://torkildl@github.com': 
+Counting objects: 9, done.
+Delta compression using up to 8 threads.
+Compressing objects:  11% (1/9)   Compressing objects:  22% (2/9)   Compressing objects:  33% (3/9)   Compressing objects:  44% (4/9)   Compressing objects:  55% (5/9)   Compressing objects:  66% (6/9)   Compressing objects:  77% (7/9)   Compressing objects:  88% (8/9)   Compressing objects: 100% (9/9)   Compressing objects: 100% (9/9), done.
+Writing objects:  11% (1/9)   Writing objects:  22% (2/9)   Writing objects:  33% (3/9)   Writing objects:  44% (4/9)   Writing objects:  55% (5/9)   Writing objects:  66% (6/9)   Writing objects:  77% (7/9)   Writing objects:  88% (8/9)   Writing objects: 100% (9/9)   Writing objects: 100% (9/9), 2.66 KiB | 2.66 MiB/s, done.
+Total 9 (delta 5), reused 0 (delta 0)
+remote: Resolving deltas:   0% (0/5)   [Kremote: Resolving deltas:  20% (1/5)   [Kremote: Resolving deltas:  40% (2/5)   [Kremote: Resolving deltas:  60% (3/5)   [Kremote: Resolving deltas:  80% (4/5)   [Kremote: Resolving deltas: 100% (5/5)   [Kremote: Resolving deltas: 100% (5/5), completed with 5 local objects.[K
+To https://github.com/torkildl/bACEian.git
+   fc5b3b4..58925d5  master -> master
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git push origin mastercommit -m "Berkeley workshop materials II"status[K[1Padd .[2Pls libs[2P-lmv mcmc_slides2-diagnostics.pdf diagnosticsMCMC.pdf ignore/ls -l[Klibsgit add .statuscommit -m "Berkeley workshop materials II"[24Ppush origin master[Krm -rf b[Kpresentation-berkeley.[K-[K_files/figure-html/[K[K[K[K[K[K[K[K[K[K[K[K[K
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ vi .gitignore 
+[?2004h[23;0;0t]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ vi README.md 
+[?2004h[23;0;0t]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ vi README.md 
+[?2004h[23;0;0t]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git add .
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git a[Kstatus
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	[32mmodified:   .Rproj.user/F40D7C60/console06/3A2CAEE1[m
+	[32mmodified:   .Rproj.user/F40D7C60/console06/INDEX001[m
+	[32mmodified:   README.md[m
+	[32mmodified:   presentation-berkeley.Rmd[m
+	[32mmodified:   presentation-berkeley.html[m
+	[32mdeleted:    presentation-berkeley_files/figure-html/cars-1.svg[m
+	[32mrenamed:    presentation-berkeley_files/figure-html/unnamed-chunk-12-1.png -> presentation-berkeley_files/figure-html/unnamed-chunk-10-1.png[m
+	[32mrenamed:    presentation-berkeley_files/figure-html/unnamed-chunk-10-1.png -> presentation-berkeley_files/figure-html/unnamed-chunk-11-1.png[m
+	[32mrenamed:    presentation-berkeley_files/figure-html/unnamed-chunk-11-1.png -> presentation-berkeley_files/figure-html/unnamed-chunk-12-1.png[m
+	[32mdeleted:    presentation-berkeley_files/figure-html/unnamed-chunk-9-1.png[m
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	[31mmodified:   .Rproj.user/F40D7C60/console06/3A2CAEE1[m
+
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git status[1Padd .vi README.md [1@.gitignore[C
+[?2004h[23;0;0t]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git add .
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	[32mmodified:   .Rproj.user/F40D7C60/console06/3A2CAEE1[m
+	[32mmodified:   .Rproj.user/F40D7C60/console06/INDEX001[m
+	[32mmodified:   .gitignore[m
+	[32mmodified:   README.md[m
+	[32mmodified:   presentation-berkeley.Rmd[m
+	[32mmodified:   presentation-berkeley.html[m
+	[32mdeleted:    presentation-berkeley_files/figure-html/cars-1.svg[m
+	[32mrenamed:    presentation-berkeley_files/figure-html/unnamed-chunk-12-1.png -> presentation-berkeley_files/figure-html/unnamed-chunk-10-1.png[m
+	[32mrenamed:    presentation-berkeley_files/figure-html/unnamed-chunk-10-1.png -> presentation-berkeley_files/figure-html/unnamed-chunk-11-1.png[m
+	[32mrenamed:    presentation-berkeley_files/figure-html/unnamed-chunk-11-1.png -> presentation-berkeley_files/figure-html/unnamed-chunk-12-1.png[m
+	[32mdeleted:    presentation-berkeley_files/figure-html/unnamed-chunk-9-1.png[m
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	[31mmodified:   .Rproj.user/F40D7C60/console06/3A2CAEE1[m
+
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git [K[K[K[Krm -rf presentation-berkeley
+presentation-berkeley_files/ presentation-berkeley.html   presentation-berkeley.Rmd    
+]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ rm -rf presentation-berkeley_files/
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ rm -rf presentation-berkeley_files/[K[K[K[K[K[K[K[Ky.html 
+]0;/home/torkildl/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian]0;torkildl@xps: ~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[01;32mtorkildl@xps[00m:[01;34m~/Dropbox/Prosjekter/OPENFLUX/Projects/bACEian[00m$ git add .

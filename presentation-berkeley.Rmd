@@ -61,13 +61,13 @@ interesting <- c("mu", "a", "c", "e_sigma", "A", "C", "E", "Asd", "Csd", "Esd")
   
   4.1 Some Stan code
 
-  4.2 Some results
+  4.2 Some diagnostics
 
-  4.3 Some diagnostics
+  4.3 Some results
 
-5. Some diagnostics and example result
 
-6. My questions
+5. What to do next? / My questions
+
 
 ---
 
@@ -79,6 +79,7 @@ Amateur answer: A program that let you estimate models "the bayesian way",
 - which means the results are represented as the posterior distribution of parameters,
  
 - which means your results are a data set about the parameters.
+
 
 
 
@@ -333,58 +334,11 @@ model {
 # Output
 ```{r, eval=T,include=F}
 load("draws20000.RData")
+posterior <- tidy_draws(dirichlet_fit)
 ```
 
 ```{r}
 print(dirichlet_fit)
-```
-
----
-
-# Posteriors for VCs
-
-```{r post}
-posterior <- tidy_draws(dirichlet_fit)
-head(select(posterior, interesting))
-
-histoace <- posterior %>% 
-  select(Asd, Csd, Esd, .chain) %>% 
-  gather(key=parm, value=est, -.chain) %>% 
-  ggplot() + geom_density(aes(fill=as.factor(.chain), x=est), alpha=.3) + facet_wrap(~parm, ncol=2)
-```
-
----
-
-# Posteriors for VCs
-
-```{r}
-shift_legend2(histoace)
-```
-
----
-
-# Scatter of posterior of Asd and Csd
-
-```{r}
-ggplot(posterior) + geom_point(aes(x=Asd, y=Csd), alpha=0.2, fill= "seagreen", color="seagreen") +theme_minimal()
-```
-
----
-
-# Ask the posterior questions!
-
-```{r}
-# How likely that genetics more important than families?
-AoverC <- nrow(posterior %>% filter(Asd>Csd))/nrow(posterior)
-scales::percent(AoverC)
-
-# How likely that families more important than other environmental factors?
-CoverE <- nrow(posterior %>% filter(Csd>Esd))/nrow(posterior)
-scales::percent(CoverE)
-
-# How likely that genetics explain more than half of variance?
-Ahalf <-  nrow(posterior %>% filter(Asd>0.5))/nrow(posterior)
-scales::percent(Ahalf)
 ```
 
 ---
@@ -443,6 +397,56 @@ posterior %>%
 maxlag <- 1000
 posterior %>% select(interesting) %>% map(function(x) return(acf(x,lag.max = maxlag, plot=F)$acf)) %>% bind_cols %>% filter(row_number()>1) %>% mutate(lag = 1:maxlag) %>% gather(key=parm, value=acf, -lag) %>% ggplot(aes(x=lag,y=acf)) + geom_line() + facet_wrap(~parm) + ylim(-0.2,0.3)
 ```
+
+
+---
+
+# Posteriors for VCs
+
+```{r post}
+posterior <- tidy_draws(dirichlet_fit)
+head(select(posterior, interesting))
+
+histoace <- posterior %>% 
+  select(Asd, Csd, Esd, .chain) %>% 
+  gather(key=parm, value=est, -.chain) %>% 
+  ggplot() + geom_density(aes(fill=as.factor(.chain), x=est), alpha=.3) + facet_wrap(~parm, ncol=2)
+```
+
+---
+
+# Posteriors for VCs
+
+```{r}
+shift_legend2(histoace)
+```
+
+---
+
+# Scatter of posterior of Asd and Csd
+
+```{r}
+ggplot(posterior) + geom_point(aes(x=Asd, y=Csd), alpha=0.2, fill= "seagreen", color="seagreen") +theme_minimal()
+```
+
+---
+
+# Ask the posterior questions!
+
+```{r}
+# How likely that genetics more important than families?
+AoverC <- nrow(posterior %>% filter(Asd>Csd))/nrow(posterior)
+scales::percent(AoverC)
+
+# How likely that families more important than other environmental factors?
+CoverE <- nrow(posterior %>% filter(Csd>Esd))/nrow(posterior)
+scales::percent(CoverE)
+
+# How likely that genetics explain more than half of variance?
+Ahalf <-  nrow(posterior %>% filter(Asd>0.5))/nrow(posterior)
+scales::percent(Ahalf)
+```
+
 
 ---
 
